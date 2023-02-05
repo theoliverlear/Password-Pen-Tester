@@ -1,12 +1,8 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 public class PasswordCracker implements Runnable {
     static int nThreads = Runtime.getRuntime().availableProcessors() / 2;
     static ExecutorService executor = Executors.newFixedThreadPool(nThreads);
@@ -27,12 +23,12 @@ public class PasswordCracker implements Runnable {
         int i = input.nextInt();
         if (i == 1) {
             long start = System.currentTimeMillis();
-            this.randCharPasswordGenerator();
+            this.randCharListPasswordGenerator();
             long time = (System.currentTimeMillis() - start) / 1000;
             System.out.println(time + " seconds");
         } else if (i == 2) {
             long start = System.currentTimeMillis();
-            this.randCharPasswordGeneratorTwo();
+            this.randCharPasswordGenerator();
             long time = (System.currentTimeMillis() - start) / 1000;
             System.out.println(time + " seconds");
         }
@@ -52,7 +48,6 @@ public class PasswordCracker implements Runnable {
             ArrayList<Character> guessOneDigit = new ArrayList<>();
             Character characterOne = index[itrOne];
             guessOneDigit.add(characterOne);
-            //guesses.add(guessOneDigit);
             if (!isCorrect) {
                 if (guessOneDigit.equals(this.arrayListPassword)) {
                     long time = (System.currentTimeMillis() - start) / 1000;
@@ -72,7 +67,6 @@ public class PasswordCracker implements Runnable {
                 Character characterTwo = index[itrTwo];
                 guessTwoDigit.add(characterOne);
                 guessTwoDigit.add(characterTwo);
-                //guesses.add(guessTwoDigit);
                 if (!isCorrect){
                     if (guessTwoDigit.equals(this.arrayListPassword)) {
                         long time = (System.currentTimeMillis() - start) / 1000;
@@ -93,7 +87,6 @@ public class PasswordCracker implements Runnable {
                     guessThreeDigit.add(characterOne);
                     guessThreeDigit.add(characterTwo);
                     guessThreeDigit.add(characterThree);
-                    //guesses.add(guessThreeDigit);
                     if (!isCorrect) {
                         if (guessThreeDigit.equals(this.arrayListPassword)) {
                             long time = (System.currentTimeMillis() - start) / 1000;
@@ -115,7 +108,6 @@ public class PasswordCracker implements Runnable {
                         guessFourDigit.add(characterTwo);
                         guessFourDigit.add(characterThree);
                         guessFourDigit.add(characterFour);
-                        //guesses.add(guessThreeDigit);
                         if (!isCorrect){
                             if (guessFourDigit.equals(this.arrayListPassword)) {
                                 long time = (System.currentTimeMillis() - start) / 1000;
@@ -138,7 +130,6 @@ public class PasswordCracker implements Runnable {
                             guessFiveDigit.add(characterThree);
                             guessFiveDigit.add(characterFour);
                             guessFiveDigit.add(characterFive);
-                            //guesses.add(guessFiveDigit);
                             if (!isCorrect){
                                 if (guessFiveDigit.equals(this.arrayListPassword)) {
                                     long time = (System.currentTimeMillis() - start) / 1000;
@@ -162,7 +153,6 @@ public class PasswordCracker implements Runnable {
                                 guessSixDigit.add(characterFour);
                                 guessSixDigit.add(characterFive);
                                 guessSixDigit.add(characterSix);
-                                //guesses.add(guessSixDigit);
                                 if (!isCorrect){
                                     if (guessSixDigit.equals(this.arrayListPassword)) {
                                         long time = (System.currentTimeMillis() - start) / 1000;
@@ -187,7 +177,6 @@ public class PasswordCracker implements Runnable {
                                     guessSevenDigit.add(characterFive);
                                     guessSevenDigit.add(characterSix);
                                     guessSevenDigit.add(characterSeven);
-                                    //guesses.add(guessSevenDigit);
                                     if (!isCorrect){
                                         if (guessSevenDigit.equals(this.arrayListPassword)) {
                                             long time = (System.currentTimeMillis() - start) / 1000;
@@ -213,7 +202,6 @@ public class PasswordCracker implements Runnable {
                                         guessEightDigit.add(characterSix);
                                         guessEightDigit.add(characterSeven);
                                         guessEightDigit.add(characterEight);
-                                        //guesses.add(guessEightDigit);
                                         if (!isCorrect){
                                             if (guessEightDigit.equals(this.arrayListPassword)) {
                                                 long time = (System.currentTimeMillis() - start) / 1000;
@@ -236,9 +224,8 @@ public class PasswordCracker implements Runnable {
                 }
             }
         }
-       // System.out.println(guesses);
     }
-    public void randCharPasswordGeneratorTwo() {
+    public void randCharPasswordGenerator() {
         long start = System.currentTimeMillis();
         boolean correctValue = false;
         long attempts = 1;
@@ -262,8 +249,7 @@ public class PasswordCracker implements Runnable {
                 }
         }
     }
-//turn into new method
-    public void randCharPasswordGenerator() {
+    public void randCharListPasswordGenerator() {
         long start = System.currentTimeMillis();
         boolean correctValue = false;
         int attempts = 1;
@@ -306,13 +292,11 @@ public class PasswordCracker implements Runnable {
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter a test password: ");
         String password = input.nextLine();
-        nThreads = 1; //override for now but will have third option which will have all methods race to be first and the executor will terminate if one is found
+        nThreads = 1; // Override to one thread for now. It will have third option which will have all methods race to be first and the executor will terminate if one is found.
         for (int i = 0; i < nThreads; i++) {
             Runnable task = new PasswordCracker(password);
             executor.execute(task);
-        }
-        executor.shutdown();
-        }
+        } executor.shutdown(); }
     @Override
     public void run() {
         Scanner input = new Scanner(System.in);
@@ -322,7 +306,7 @@ public class PasswordCracker implements Runnable {
             int choice = input.nextInt();
             if (choice == 1) {
                 chosen = true;
-                this.randCharPasswordGeneratorTwo();
+                this.randCharPasswordGenerator();
             } else if (choice == 2) {
                 chosen = true;
                 this.seqCharPasswordGenerator();
