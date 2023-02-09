@@ -227,6 +227,8 @@ public class PasswordCracker implements Runnable {
     }
     //To do: Build random generator with random size (within reasonable password length) and random characters.
     public void randCharListPasswordGenerator() {
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(0);
         long start = System.currentTimeMillis();
         boolean correctValue = false;
         long attempts = 1;
@@ -250,13 +252,13 @@ public class PasswordCracker implements Runnable {
                     if (!containsGuess) {
                         if (guess.equals(this.arrayListPassword)) {
                             long time = (System.currentTimeMillis() - start) / 1000;
-                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + attempts + " | Possibilities: " + possibleAttempts + " | " + guess + " - Correct - " + time + " seconds");
+                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Correct - " + time + " seconds");
                             correctValue = true;
                             executor.shutdownNow();
                     } else {
                             long time = (System.currentTimeMillis() - start) / 1000;
                             wrongGuesses.add(guess);
-                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + attempts + " | Possibilities: " + possibleAttempts + " | " + guess + " - Wrong - " + time + " seconds");
+                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Wrong - " + time + " seconds");
                             attempts++;
                             wrongGuessAmount++;
                         }
