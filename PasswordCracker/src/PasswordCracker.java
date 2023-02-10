@@ -22,6 +22,7 @@ public class PasswordCracker implements Runnable {
         arrayPassword = password.toCharArray();
         for (Character character : arrayPassword) { arrayListPassword.add(character); }
     }
+    //To do: make a sequence method that takes a length argument and uses logic flow of original but breaks its (possibly number based) label depending on the argument.
     public void seqCharPasswordGenerator() {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
