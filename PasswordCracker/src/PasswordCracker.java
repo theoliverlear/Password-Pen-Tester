@@ -10,10 +10,13 @@ import java.text.NumberFormat;
 public class PasswordCracker implements Runnable {
     static int nThreads = Runtime.getRuntime().availableProcessors() / 2;
     static ExecutorService executor = Executors.newFixedThreadPool(nThreads);
+    static long nMemory = Runtime.getRuntime().freeMemory();
+    static long nMaxMemory = Runtime.getRuntime().maxMemory();
     String password = "";
     char[] arrayPassword;
     char[] index = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0','1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ',', '.', '\\', '/', '<', '>', '~', '!', '@', '#', '$', '%', '&', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '?', '\'', '"', '|'};
     ArrayList<Character> arrayListPassword = new ArrayList<>();
+    int passwordLengthCapacity = 8; // Override to 8 for now. To do: implement iterators to meet the typical 32 or 64 character password limit.
     public PasswordCracker(String password) {
         this.password = password;
         arrayPassword = password.toCharArray();
@@ -209,38 +212,60 @@ public class PasswordCracker implements Runnable {
         boolean correctValue = false;
         long attempts = 1;
         long possibleAttempts = 1;
-        if (arrayListPassword.size() == 1) { possibleAttempts = index.length;} else if (arrayListPassword.size() > 1) { for (int i = 0; i < arrayListPassword.size(); i++) { possibleAttempts *= index.length; }}
+        if (arrayListPassword.size() == 1) { possibleAttempts = index.length; } else if (arrayListPassword.size() > 1) { for (int i = 0; i < arrayListPassword.size(); i++) { possibleAttempts *= index.length; }}
         while(!correctValue) {
             ArrayList<Character> guess = new ArrayList<>();
             for(int j = 0; j < arrayListPassword.size(); j++) { guess.add(index[(int) (Math.random() * index.length)]); }
             if (guess.equals(this.arrayListPassword)) {
                 long time = (System.currentTimeMillis() - start) / 1000;
-                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | Possibilities | " + numberFormat.format(possibleAttempts) + ": " + guess + " - Correct - " + time + " seconds");
+                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Correct - " + time + " seconds");
                 correctValue = true;
                 executor.shutdownNow();
             } else {
                 long time = (System.currentTimeMillis() - start) / 1000;
-                    System.out.println(" Thread: " + Thread.currentThread().getName() +  " | Attempt: " + numberFormat.format(attempts) + " | Possibilities | " + numberFormat.format(possibleAttempts) + ": " + guess + " - Wrong - " + time + " seconds");
+                    System.out.println(" Thread: " + Thread.currentThread().getName() +  " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Wrong - " + time + " seconds");
                     attempts++;
                 }
         }
     }
-    //To do: Build random generator with random size (within reasonable password length) and random characters.
+    public void randCharLenPasswordGenerator() {
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(0);
+        long start = System.currentTimeMillis();
+        boolean correctValue = false;
+        long attempts = 1;
+        long possibleAttempts = 1;
+        while(!correctValue) {
+            ArrayList<Character> guess = new ArrayList<>();
+            int randSize = (int) (Math.random() * passwordLengthCapacity);
+            if (randSize == 0) { randSize++; }
+            if (randSize == 1) { possibleAttempts = index.length; } else if (randSize > 1) { for (int i = 0; i < randSize; i++) { possibleAttempts *= index.length; }}
+            for(int j = 0; j < randSize; j++) { guess.add(index[(int) (Math.random() * index.length)]); }
+            if (guess.equals(this.arrayListPassword)) {
+                long time = (System.currentTimeMillis() - start) / 1000;
+                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guess + " - Correct - " + time + " seconds");
+                correctValue = true;
+                executor.shutdownNow();
+            } else {
+                long time = (System.currentTimeMillis() - start) / 1000;
+                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guess + " - Wrong - " + time + " seconds");
+                attempts++;
+            }
+        }
+    }
     public void randCharListPasswordGenerator() {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
         long start = System.currentTimeMillis();
         boolean correctValue = false;
         long attempts = 1;
-        int wrongGuessAmount = 0;
+        long wrongGuessAmount = 0;
         long possibleAttempts = 1;
         if (arrayListPassword.size() == 1) { possibleAttempts = index.length; } else if (arrayListPassword.size() > 1) { for (int i = 0; i < arrayListPassword.size(); i++) { possibleAttempts *= index.length; }}
         ArrayList<ArrayList<Character>> wrongGuesses = new ArrayList<>();
             while(!correctValue) {
                 ArrayList<Character> guess = new ArrayList<>();
-                for(int j = 0; j < arrayListPassword.size(); j++) {
-                    guess.add(index[(int) (Math.random() * index.length)]);
-                }
+                for(int j = 0; j < arrayListPassword.size(); j++) { guess.add(index[(int) (Math.random() * index.length)]); }
                 ArrayList<Character> wrongGuess = new ArrayList<>();
                 boolean containsGuess = false;
                     for (int i = 0; i < wrongGuessAmount; i++) {
@@ -280,14 +305,20 @@ public class PasswordCracker implements Runnable {
         Scanner input = new Scanner(System.in);
         boolean chosen = false;
         while(!chosen) {
-            System.out.println("Please enter 1 for the random generator (quicker but uncertain) or 2 for the sequential generator (slower but certain): ");
+            System.out.println("Please enter 1 for the random generator (quicker but uncertain) without a set size. Please enter 2 to run the random generator with a set size. \nPlease enter or 3 for the sequential generator (slower but certain) without a set size. Please enter 4 to run the sequential generator with a set size.");
             int choice = input.nextInt();
             if (choice == 1) {
                 chosen = true;
-                this.randCharPasswordGenerator();
+                this.randCharLenPasswordGenerator();
             } else if (choice == 2) {
                 chosen = true;
+                this.randCharPasswordGenerator();
+            } else if (choice == 3) {
+                chosen = true;
                 this.seqCharPasswordGenerator();
+            } else if (choice == 4) {
+                chosen = true;
+                System.out.println("Functionality is not yet implemented.");
             } else {
                 chosen = false;
                 System.out.println(choice + ": is not an option.");
