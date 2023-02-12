@@ -1,7 +1,7 @@
 // Oliver Sigwarth
 // Password Pen Tester: A Java program that test the strength of passwords using various methods.
 // Created 2/6/2023
-// Last modified 2/11/2023
+// Last modified 2/12/2023
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -11,7 +11,7 @@ public class PasswordCracker implements Runnable {
     static int nThreads = Runtime.getRuntime().availableProcessors() / 2;
     static ExecutorService executor = Executors.newFixedThreadPool(nThreads);
     static long nMemory = Runtime.getRuntime().freeMemory();
-    static long nMaxMemory = Runtime.getRuntime().maxMemory();
+    static long nMaxMemory = Runtime.getRuntime().maxMemory(); // To do: unique data list iterators will only run as long as they have a set amount of memory remaining for system functionality. If not, the program will terminate and notify the user that the method is unusable for their given test password.
     String password = "";
     char[] arrayPassword;
     char[] index = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0','1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ',', '.', '\\', '/', '<', '>', '~', '!', '@', '#', '$', '%', '&', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '?', '\'', '"', '|'};
