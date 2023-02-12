@@ -1,7 +1,7 @@
 // Oliver Sigwarth
 // Password Pen Tester: A Java program that test the strength of passwords using various methods.
 // Created 2/6/2023
-// Last modified 2/9/2023
+// Last modified 2/11/2023
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +16,7 @@ public class PasswordCracker implements Runnable {
     char[] arrayPassword;
     char[] index = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0','1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ',', '.', '\\', '/', '<', '>', '~', '!', '@', '#', '$', '%', '&', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '?', '\'', '"', '|'};
     ArrayList<Character> arrayListPassword = new ArrayList<>();
-    int passwordLengthCapacity = 8; // Override to 8 for now. To do: implement iterators to meet the typical 32 or 64 character password limit.
+    int passwordLengthCapacity = 20; // Override to 20 for now. To do: implement iterators to meet the typical 32 or 64 character password limit.
     public PasswordCracker(String password) {
         this.password = password;
         arrayPassword = password.toCharArray();
@@ -40,13 +40,13 @@ public class PasswordCracker implements Runnable {
             if (!isCorrect) {
                 if (guessOneDigit.equals(this.arrayListPassword)) {
                     long time = (System.currentTimeMillis() - start) / 1000;
-                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessOneDigit + " | - Correct - " + time + " seconds");
+                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessOneDigit + " | - Correct - " + time + " seconds");
                     isCorrect = true;
                     executor.shutdownNow();
                     break outer;
                 } else {
                     long time = (System.currentTimeMillis() - start) / 1000;
-                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessOneDigit + " | - Wrong - " + time + " seconds");
+                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessOneDigit + " | - Wrong - " + time + " seconds");
                     attempts++;
                 }
             }
@@ -58,13 +58,13 @@ public class PasswordCracker implements Runnable {
                 if (!isCorrect){
                     if (guessTwoDigit.equals(this.arrayListPassword)) {
                         long time = (System.currentTimeMillis() - start) / 1000;
-                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessTwoDigit + " | - Correct - " + time + " seconds");
+                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwoDigit + " | - Correct - " + time + " seconds");
                         isCorrect = true;
                         executor.shutdownNow();
                         break outer;
                     } else {
                         long time = (System.currentTimeMillis() - start) / 1000;
-                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessTwoDigit + " | - Wrong - " + time + " seconds");
+                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwoDigit + " | - Wrong - " + time + " seconds");
                         attempts++;
                     }
                 }
@@ -77,13 +77,13 @@ public class PasswordCracker implements Runnable {
                     if (!isCorrect) {
                         if (guessThreeDigit.equals(this.arrayListPassword)) {
                             long time = (System.currentTimeMillis() - start) / 1000;
-                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessThreeDigit + " | - Correct - " + time + " seconds");
+                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThreeDigit + " | - Correct - " + time + " seconds");
                             isCorrect = true;
                             executor.shutdownNow();
                             break outer;
                         } else {
                             long time = (System.currentTimeMillis() - start) / 1000;
-                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessThreeDigit + " | - Wrong - " + time + " seconds");
+                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThreeDigit + " | - Wrong - " + time + " seconds");
                             attempts++;
                         }
                     }
@@ -97,13 +97,13 @@ public class PasswordCracker implements Runnable {
                         if (!isCorrect){
                             if (guessFourDigit.equals(this.arrayListPassword)) {
                                 long time = (System.currentTimeMillis() - start) / 1000;
-                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessFourDigit + " | - Correct - " + time + " seconds");
+                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessFourDigit + " | - Correct - " + time + " seconds");
                                 isCorrect = true;
                                 executor.shutdownNow();
                                 break outer;
                             } else {
                                 long time = (System.currentTimeMillis() - start) / 1000;
-                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessFourDigit + " | - Wrong - " + time + " seconds");
+                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessFourDigit + " | - Wrong - " + time + " seconds");
                                 attempts++;
                             }
                         }
@@ -118,13 +118,13 @@ public class PasswordCracker implements Runnable {
                             if (!isCorrect){
                                 if (guessFiveDigit.equals(this.arrayListPassword)) {
                                     long time = (System.currentTimeMillis() - start) / 1000;
-                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessFiveDigit + " | - Correct - " + time + " seconds");
+                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessFiveDigit + " | - Correct - " + time + " seconds");
                                     isCorrect = true;
                                     executor.shutdownNow();
                                     break outer;
                                 } else {
                                     long time = (System.currentTimeMillis() - start) / 1000;
-                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessFiveDigit + " | - Wrong - " + time + " seconds");
+                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessFiveDigit + " | - Wrong - " + time + " seconds");
                                     attempts++;
                                 }
                             }
@@ -140,13 +140,13 @@ public class PasswordCracker implements Runnable {
                                 if (!isCorrect){
                                     if (guessSixDigit.equals(this.arrayListPassword)) {
                                         long time = (System.currentTimeMillis() - start) / 1000;
-                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessSixDigit + " | - Correct - " + time + " seconds");
+                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessSixDigit + " | - Correct - " + time + " seconds");
                                         isCorrect = true;
                                         executor.shutdownNow();
                                         break outer;
                                     } else {
                                         long time = (System.currentTimeMillis() - start) / 1000;
-                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessSixDigit + " | - Wrong - " + time + " seconds");
+                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessSixDigit + " | - Wrong - " + time + " seconds");
                                         attempts++;
                                     }
                                 }
@@ -163,13 +163,13 @@ public class PasswordCracker implements Runnable {
                                     if (!isCorrect){
                                         if (guessSevenDigit.equals(this.arrayListPassword)) {
                                             long time = (System.currentTimeMillis() - start) / 1000;
-                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessSevenDigit + " | - Correct - " + time + " seconds");
+                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessSevenDigit + " | - Correct - " + time + " seconds");
                                             isCorrect = true;
                                             executor.shutdownNow();
                                             break outer;
                                         } else {
                                             long time = (System.currentTimeMillis() - start) / 1000;
-                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessSevenDigit + " | - Wrong - " + time + " seconds");
+                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessSevenDigit + " | - Wrong - " + time + " seconds");
                                             attempts++;
                                         }
                                     }
@@ -187,14 +187,393 @@ public class PasswordCracker implements Runnable {
                                         if (!isCorrect){
                                             if (guessEightDigit.equals(this.arrayListPassword)) {
                                                 long time = (System.currentTimeMillis() - start) / 1000;
-                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessEightDigit + " | - Correct - " + time + " seconds");
+                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessEightDigit + " | - Correct - " + time + " seconds");
                                                 isCorrect = true;
                                                 executor.shutdownNow();
                                                 break outer;
                                             } else {
                                                 long time = (System.currentTimeMillis() - start) / 1000;
-                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guessEightDigit + " | - Wrong - " + time + " seconds");
+                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessEightDigit + " | - Wrong - " + time + " seconds");
                                                 attempts++;
+                                            }
+                                        }
+                                        for (int itrNine = 0; itrNine < indexArrayList.size(); itrNine++) {
+                                            ArrayList<Character> guessNineDigit = new ArrayList<>();
+                                            Character characterNine = index[itrNine];
+                                            guessNineDigit.add(characterOne);
+                                            guessNineDigit.add(characterTwo);
+                                            guessNineDigit.add(characterThree);
+                                            guessNineDigit.add(characterFour);
+                                            guessNineDigit.add(characterFive);
+                                            guessNineDigit.add(characterSix);
+                                            guessNineDigit.add(characterSeven);
+                                            guessNineDigit.add(characterEight);
+                                            guessNineDigit.add(characterNine);
+                                            if (!isCorrect){
+                                                if (guessNineDigit.equals(this.arrayListPassword)) {
+                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessNineDigit + " | - Correct - " + time + " seconds");
+                                                    isCorrect = true;
+                                                    executor.shutdownNow();
+                                                    break outer;
+                                                } else {
+                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessNineDigit + " | - Wrong - " + time + " seconds");
+                                                    attempts++;
+                                                }
+                                            }
+                                            for (int itrTen = 0; itrTen < indexArrayList.size(); itrTen++) {
+                                                ArrayList<Character> guessTenDigit = new ArrayList<>();
+                                                Character characterTen = index[itrTen];
+                                                guessTenDigit.add(characterOne);
+                                                guessTenDigit.add(characterTwo);
+                                                guessTenDigit.add(characterThree);
+                                                guessTenDigit.add(characterFour);
+                                                guessTenDigit.add(characterFive);
+                                                guessTenDigit.add(characterSix);
+                                                guessTenDigit.add(characterSeven);
+                                                guessTenDigit.add(characterEight);
+                                                guessTenDigit.add(characterNine);
+                                                guessTenDigit.add(characterTen);
+                                                if (!isCorrect){
+                                                    if (guessTenDigit.equals(this.arrayListPassword)) {
+                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTenDigit + " | - Correct - " + time + " seconds");
+                                                        isCorrect = true;
+                                                        executor.shutdownNow();
+                                                        break outer;
+                                                    } else {
+                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTenDigit + " | - Wrong - " + time + " seconds");
+                                                        attempts++;
+                                                    }
+                                                }
+                                                for (int itrEleven = 0; itrEleven < indexArrayList.size(); itrEleven++) {
+                                                    ArrayList<Character> guessElevenDigit = new ArrayList<>();
+                                                    Character characterEleven = index[itrEleven];
+                                                    guessElevenDigit.add(characterOne);
+                                                    guessElevenDigit.add(characterTwo);
+                                                    guessElevenDigit.add(characterThree);
+                                                    guessElevenDigit.add(characterFour);
+                                                    guessElevenDigit.add(characterFive);
+                                                    guessElevenDigit.add(characterSix);
+                                                    guessElevenDigit.add(characterSeven);
+                                                    guessElevenDigit.add(characterEight);
+                                                    guessElevenDigit.add(characterNine);
+                                                    guessElevenDigit.add(characterTen);
+                                                    guessElevenDigit.add(characterEleven);
+                                                    if (!isCorrect){
+                                                        if (guessElevenDigit.equals(this.arrayListPassword)) {
+                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessElevenDigit + " | - Correct - " + time + " seconds");
+                                                            isCorrect = true;
+                                                            executor.shutdownNow();
+                                                            break outer;
+                                                        } else {
+                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessElevenDigit + " | - Wrong - " + time + " seconds");
+                                                            attempts++;
+                                                        }
+                                                    }
+                                                    for (int itrTwelve = 0; itrTwelve < indexArrayList.size(); itrTwelve++) {
+                                                        ArrayList<Character> guessTwelveDigit = new ArrayList<>();
+                                                        Character characterTwelve = index[itrTwelve];
+                                                        guessTwelveDigit.add(characterOne);
+                                                        guessTwelveDigit.add(characterTwo);
+                                                        guessTwelveDigit.add(characterThree);
+                                                        guessTwelveDigit.add(characterFour);
+                                                        guessTwelveDigit.add(characterFive);
+                                                        guessTwelveDigit.add(characterSix);
+                                                        guessTwelveDigit.add(characterSeven);
+                                                        guessTwelveDigit.add(characterEight);
+                                                        guessTwelveDigit.add(characterNine);
+                                                        guessTwelveDigit.add(characterTen);
+                                                        guessTwelveDigit.add(characterEleven);
+                                                        guessTwelveDigit.add(characterTwelve);
+                                                        if (!isCorrect){
+                                                            if (guessTwelveDigit.equals(this.arrayListPassword)) {
+                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwelveDigit + " | - Correct - " + time + " seconds");
+                                                                isCorrect = true;
+                                                                executor.shutdownNow();
+                                                                break outer;
+                                                            } else {
+                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwelveDigit + " | - Wrong - " + time + " seconds");
+                                                                attempts++;
+                                                            }
+                                                        }
+                                                        for (int itrThirteen = 0; itrThirteen < indexArrayList.size(); itrThirteen++) {
+                                                            ArrayList<Character> guessThirteenDigit = new ArrayList<>();
+                                                            Character characterThirteen = index[itrThirteen];
+                                                            guessThirteenDigit.add(characterOne);
+                                                            guessThirteenDigit.add(characterTwo);
+                                                            guessThirteenDigit.add(characterThree);
+                                                            guessThirteenDigit.add(characterFour);
+                                                            guessThirteenDigit.add(characterFive);
+                                                            guessThirteenDigit.add(characterSix);
+                                                            guessThirteenDigit.add(characterSeven);
+                                                            guessThirteenDigit.add(characterEight);
+                                                            guessThirteenDigit.add(characterNine);
+                                                            guessThirteenDigit.add(characterTen);
+                                                            guessThirteenDigit.add(characterEleven);
+                                                            guessThirteenDigit.add(characterTwelve);
+                                                            guessThirteenDigit.add(characterThirteen);
+                                                            if (!isCorrect){
+                                                                if (guessThirteenDigit.equals(this.arrayListPassword)) {
+                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThirteenDigit + " | - Correct - " + time + " seconds");
+                                                                    isCorrect = true;
+                                                                    executor.shutdownNow();
+                                                                    break outer;
+                                                                } else {
+                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThirteenDigit + " | - Wrong - " + time + " seconds");
+                                                                    attempts++;
+                                                                }
+                                                            }
+                                                            for (int itrFourteen = 0; itrFourteen < indexArrayList.size(); itrFourteen++) {
+                                                                ArrayList<Character> guessFourteenDigit = new ArrayList<>();
+                                                                Character characterFourteen = index[itrFourteen];
+                                                                guessFourteenDigit.add(characterOne);
+                                                                guessFourteenDigit.add(characterTwo);
+                                                                guessFourteenDigit.add(characterThree);
+                                                                guessFourteenDigit.add(characterFour);
+                                                                guessFourteenDigit.add(characterFive);
+                                                                guessFourteenDigit.add(characterSix);
+                                                                guessFourteenDigit.add(characterSeven);
+                                                                guessFourteenDigit.add(characterEight);
+                                                                guessFourteenDigit.add(characterNine);
+                                                                guessFourteenDigit.add(characterTen);
+                                                                guessFourteenDigit.add(characterEleven);
+                                                                guessFourteenDigit.add(characterTwelve);
+                                                                guessFourteenDigit.add(characterThirteen);
+                                                                guessFourteenDigit.add(characterFourteen);
+                                                                if (!isCorrect){
+                                                                    if (guessFourteenDigit.equals(this.arrayListPassword)) {
+                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessFourteenDigit + " | - Correct - " + time + " seconds");
+                                                                        isCorrect = true;
+                                                                        executor.shutdownNow();
+                                                                        break outer;
+                                                                    } else {
+                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessFourteenDigit + " | - Wrong - " + time + " seconds");
+                                                                        attempts++;
+                                                                    }
+                                                                }
+                                                                for (int itrFifteen = 0; itrFifteen < indexArrayList.size(); itrFifteen++) {
+                                                                    ArrayList<Character> guessFifteenDigit = new ArrayList<>();
+                                                                    Character characterFifteen = index[itrFifteen];
+                                                                    guessFifteenDigit.add(characterOne);
+                                                                    guessFifteenDigit.add(characterTwo);
+                                                                    guessFifteenDigit.add(characterThree);
+                                                                    guessFifteenDigit.add(characterFour);
+                                                                    guessFifteenDigit.add(characterFive);
+                                                                    guessFifteenDigit.add(characterSix);
+                                                                    guessFifteenDigit.add(characterSeven);
+                                                                    guessFifteenDigit.add(characterEight);
+                                                                    guessFifteenDigit.add(characterNine);
+                                                                    guessFifteenDigit.add(characterTen);
+                                                                    guessFifteenDigit.add(characterEleven);
+                                                                    guessFifteenDigit.add(characterTwelve);
+                                                                    guessFifteenDigit.add(characterThirteen);
+                                                                    guessFifteenDigit.add(characterFourteen);
+                                                                    guessFifteenDigit.add(characterFifteen);
+                                                                    if (!isCorrect){
+                                                                        if (guessFifteenDigit.equals(this.arrayListPassword)) {
+                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessFifteenDigit + " | - Correct - " + time + " seconds");
+                                                                            isCorrect = true;
+                                                                            executor.shutdownNow();
+                                                                            break outer;
+                                                                        } else {
+                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessFifteenDigit + " | - Wrong - " + time + " seconds");
+                                                                            attempts++;
+                                                                        }
+                                                                    }
+                                                                    for (int itrSixteen = 0; itrSixteen < indexArrayList.size(); itrSixteen++) {
+                                                                        ArrayList<Character> guessSixteenDigit = new ArrayList<>();
+                                                                        Character characterSixteen = index[itrSixteen];
+                                                                        guessSixteenDigit.add(characterOne);
+                                                                        guessSixteenDigit.add(characterTwo);
+                                                                        guessSixteenDigit.add(characterThree);
+                                                                        guessSixteenDigit.add(characterFour);
+                                                                        guessSixteenDigit.add(characterFive);
+                                                                        guessSixteenDigit.add(characterSix);
+                                                                        guessSixteenDigit.add(characterSeven);
+                                                                        guessSixteenDigit.add(characterEight);
+                                                                        guessSixteenDigit.add(characterNine);
+                                                                        guessSixteenDigit.add(characterTen);
+                                                                        guessSixteenDigit.add(characterEleven);
+                                                                        guessSixteenDigit.add(characterTwelve);
+                                                                        guessSixteenDigit.add(characterThirteen);
+                                                                        guessSixteenDigit.add(characterFourteen);
+                                                                        guessSixteenDigit.add(characterFifteen);
+                                                                        guessSixteenDigit.add(characterSixteen);
+                                                                        if (!isCorrect){
+                                                                            if (guessSixteenDigit.equals(this.arrayListPassword)) {
+                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessSixteenDigit + " | - Correct - " + time + " seconds");
+                                                                                isCorrect = true;
+                                                                                executor.shutdownNow();
+                                                                                break outer;
+                                                                            } else {
+                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessSixteenDigit + " | - Wrong - " + time + " seconds");
+                                                                                attempts++;
+                                                                            }
+                                                                        }
+                                                                        for (int itrSeventeen = 0; itrSeventeen < indexArrayList.size(); itrSeventeen++) {
+                                                                            ArrayList<Character> guessSeventeenDigit = new ArrayList<>();
+                                                                            Character characterSeventeen = index[itrSeventeen];
+                                                                            guessSeventeenDigit.add(characterOne);
+                                                                            guessSeventeenDigit.add(characterTwo);
+                                                                            guessSeventeenDigit.add(characterThree);
+                                                                            guessSeventeenDigit.add(characterFour);
+                                                                            guessSeventeenDigit.add(characterFive);
+                                                                            guessSeventeenDigit.add(characterSix);
+                                                                            guessSeventeenDigit.add(characterSeven);
+                                                                            guessSeventeenDigit.add(characterEight);
+                                                                            guessSeventeenDigit.add(characterNine);
+                                                                            guessSeventeenDigit.add(characterTen);
+                                                                            guessSeventeenDigit.add(characterEleven);
+                                                                            guessSeventeenDigit.add(characterTwelve);
+                                                                            guessSeventeenDigit.add(characterThirteen);
+                                                                            guessSeventeenDigit.add(characterFourteen);
+                                                                            guessSeventeenDigit.add(characterFifteen);
+                                                                            guessSeventeenDigit.add(characterSixteen);
+                                                                            guessSeventeenDigit.add(characterSeventeen);
+                                                                            if (!isCorrect){
+                                                                                if (guessSeventeenDigit.equals(this.arrayListPassword)) {
+                                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessSeventeenDigit + " | - Correct - " + time + " seconds");
+                                                                                    isCorrect = true;
+                                                                                    executor.shutdownNow();
+                                                                                    break outer;
+                                                                                } else {
+                                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessSeventeenDigit + " | - Wrong - " + time + " seconds");
+                                                                                    attempts++;
+                                                                                }
+                                                                            }
+                                                                            for (int itrEighteen = 0; itrEighteen < indexArrayList.size(); itrEighteen++) {
+                                                                                ArrayList<Character> guessEighteenDigit = new ArrayList<>();
+                                                                                Character characterEighteen = index[itrEighteen];
+                                                                                guessEighteenDigit.add(characterOne);
+                                                                                guessEighteenDigit.add(characterTwo);
+                                                                                guessEighteenDigit.add(characterThree);
+                                                                                guessEighteenDigit.add(characterFour);
+                                                                                guessEighteenDigit.add(characterFive);
+                                                                                guessEighteenDigit.add(characterSix);
+                                                                                guessEighteenDigit.add(characterSeven);
+                                                                                guessEighteenDigit.add(characterEight);
+                                                                                guessEighteenDigit.add(characterNine);
+                                                                                guessEighteenDigit.add(characterTen);
+                                                                                guessEighteenDigit.add(characterEleven);
+                                                                                guessEighteenDigit.add(characterTwelve);
+                                                                                guessEighteenDigit.add(characterThirteen);
+                                                                                guessEighteenDigit.add(characterFourteen);
+                                                                                guessEighteenDigit.add(characterFifteen);
+                                                                                guessEighteenDigit.add(characterSixteen);
+                                                                                guessEighteenDigit.add(characterSeventeen);
+                                                                                guessEighteenDigit.add(characterEighteen);
+                                                                                if (!isCorrect){
+                                                                                    if (guessEighteenDigit.equals(this.arrayListPassword)) {
+                                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessEighteenDigit + " | - Correct - " + time + " seconds");
+                                                                                        isCorrect = true;
+                                                                                        executor.shutdownNow();
+                                                                                        break outer;
+                                                                                    } else {
+                                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessEighteenDigit + " | - Wrong - " + time + " seconds");
+                                                                                        attempts++;
+                                                                                    }
+                                                                                }
+                                                                                for (int itrNineteen = 0; itrNineteen < indexArrayList.size(); itrNineteen++) {
+                                                                                    ArrayList<Character> guessNineteenDigit = new ArrayList<>();
+                                                                                    Character characterNineteen = index[itrNineteen];
+                                                                                    guessNineteenDigit.add(characterOne);
+                                                                                    guessNineteenDigit.add(characterTwo);
+                                                                                    guessNineteenDigit.add(characterThree);
+                                                                                    guessNineteenDigit.add(characterFour);
+                                                                                    guessNineteenDigit.add(characterFive);
+                                                                                    guessNineteenDigit.add(characterSix);
+                                                                                    guessNineteenDigit.add(characterSeven);
+                                                                                    guessNineteenDigit.add(characterEight);
+                                                                                    guessNineteenDigit.add(characterNine);
+                                                                                    guessNineteenDigit.add(characterTen);
+                                                                                    guessNineteenDigit.add(characterEleven);
+                                                                                    guessNineteenDigit.add(characterTwelve);
+                                                                                    guessNineteenDigit.add(characterThirteen);
+                                                                                    guessNineteenDigit.add(characterFourteen);
+                                                                                    guessNineteenDigit.add(characterFifteen);
+                                                                                    guessNineteenDigit.add(characterSixteen);
+                                                                                    guessNineteenDigit.add(characterSeventeen);
+                                                                                    guessNineteenDigit.add(characterEighteen);
+                                                                                    guessNineteenDigit.add(characterNineteen);
+                                                                                    if (!isCorrect){
+                                                                                        if (guessNineteenDigit.equals(this.arrayListPassword)) {
+                                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessNineteenDigit + " | - Correct - " + time + " seconds");
+                                                                                            isCorrect = true;
+                                                                                            executor.shutdownNow();
+                                                                                            break outer;
+                                                                                        } else {
+                                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessNineteenDigit + " | - Wrong - " + time + " seconds");
+                                                                                            attempts++;
+                                                                                        }
+                                                                                    }
+                                                                                    for (int itrTwenty = 0; itrTwenty < indexArrayList.size(); itrTwenty++) {
+                                                                                        ArrayList<Character> guessTwentyDigit = new ArrayList<>();
+                                                                                        Character characterTwenty = index[itrTwenty];
+                                                                                        guessTwentyDigit.add(characterOne);
+                                                                                        guessTwentyDigit.add(characterTwo);
+                                                                                        guessTwentyDigit.add(characterThree);
+                                                                                        guessTwentyDigit.add(characterFour);
+                                                                                        guessTwentyDigit.add(characterFive);
+                                                                                        guessTwentyDigit.add(characterSix);
+                                                                                        guessTwentyDigit.add(characterSeven);
+                                                                                        guessTwentyDigit.add(characterEight);
+                                                                                        guessTwentyDigit.add(characterNine);
+                                                                                        guessTwentyDigit.add(characterTen);
+                                                                                        guessTwentyDigit.add(characterEleven);
+                                                                                        guessTwentyDigit.add(characterTwelve);
+                                                                                        guessTwentyDigit.add(characterThirteen);
+                                                                                        guessTwentyDigit.add(characterFourteen);
+                                                                                        guessTwentyDigit.add(characterFifteen);
+                                                                                        guessTwentyDigit.add(characterSixteen);
+                                                                                        guessTwentyDigit.add(characterSeventeen);
+                                                                                        guessTwentyDigit.add(characterEighteen);
+                                                                                        guessTwentyDigit.add(characterNineteen);
+                                                                                        guessTwentyDigit.add(characterTwenty);
+                                                                                        if (!isCorrect){
+                                                                                            if (guessTwentyDigit.equals(this.arrayListPassword)) {
+                                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyDigit + " | - Correct - " + time + " seconds");
+                                                                                                isCorrect = true;
+                                                                                                executor.shutdownNow();
+                                                                                                break outer;
+                                                                                            } else {
+                                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyDigit + " | - Wrong - " + time + " seconds");
+                                                                                                attempts++;
+                                                                                            }
+                                                                                        }
+
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -206,6 +585,8 @@ public class PasswordCracker implements Runnable {
             }
         }
     }
+    //Possibilities should only show if a size is set.
+    //Possibilities larger than type long should be a BigNumber object.
     public void randCharPasswordGenerator() {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
@@ -267,7 +648,6 @@ public class PasswordCracker implements Runnable {
             while(!correctValue) {
                 ArrayList<Character> guess = new ArrayList<>();
                 for(int j = 0; j < arrayListPassword.size(); j++) { guess.add(index[(int) (Math.random() * index.length)]); }
-                ArrayList<Character> wrongGuess = new ArrayList<>();
                 boolean containsGuess = false;
                     for (int i = 0; i < wrongGuessAmount; i++) {
                         if (guess.equals(wrongGuesses.get(i))) {
@@ -278,13 +658,13 @@ public class PasswordCracker implements Runnable {
                     if (!containsGuess) {
                         if (guess.equals(this.arrayListPassword)) {
                             long time = (System.currentTimeMillis() - start) / 1000;
-                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Correct - " + time + " seconds");
+                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Correct - " + time + " seconds");
                             correctValue = true;
                             executor.shutdownNow();
                     } else {
                             long time = (System.currentTimeMillis() - start) / 1000;
                             wrongGuesses.add(guess);
-                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Wrong - " + time + " seconds");
+                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Wrong - " + time + " seconds");
                             attempts++;
                             wrongGuessAmount++;
                         }
