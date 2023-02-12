@@ -16,13 +16,14 @@ public class PasswordCracker implements Runnable {
     char[] arrayPassword;
     char[] index = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0','1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ',', '.', '\\', '/', '<', '>', '~', '!', '@', '#', '$', '%', '&', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '?', '\'', '"', '|'};
     ArrayList<Character> arrayListPassword = new ArrayList<>();
-    int passwordLengthCapacity = 20; // Override to 20 for now. To do: implement iterators to meet the typical 32 or 64 character password limit.
+    int passwordLengthCapacity = 32; // Override to 32 for now. To do: implement iterators to meet the extended 64 or 128 character password limit.
     public PasswordCracker(String password) {
         this.password = password;
         arrayPassword = password.toCharArray();
         for (Character character : arrayPassword) { arrayListPassword.add(character); }
     }
     //To do: make a sequence method that takes a length argument and uses logic flow of original but breaks its (possibly number based) label depending on the argument.
+    //In progress: research IntStream substitutions for size, readability, and elegance.
     public void seqCharPasswordGenerator() {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
@@ -563,7 +564,529 @@ public class PasswordCracker implements Runnable {
                                                                                                 attempts++;
                                                                                             }
                                                                                         }
+                                                                                        for (int itrTwentyOne = 0; itrTwentyOne < indexArrayList.size(); itrTwentyOne++) {
+                                                                                            ArrayList<Character> guessTwentyOneDigit = new ArrayList<>();
+                                                                                            Character characterTwentyOne = index[itrTwentyOne];
+                                                                                            guessTwentyOneDigit.add(characterOne);
+                                                                                            guessTwentyOneDigit.add(characterTwo);
+                                                                                            guessTwentyOneDigit.add(characterThree);
+                                                                                            guessTwentyOneDigit.add(characterFour);
+                                                                                            guessTwentyOneDigit.add(characterFive);
+                                                                                            guessTwentyOneDigit.add(characterSix);
+                                                                                            guessTwentyOneDigit.add(characterSeven);
+                                                                                            guessTwentyOneDigit.add(characterEight);
+                                                                                            guessTwentyOneDigit.add(characterNine);
+                                                                                            guessTwentyOneDigit.add(characterTen);
+                                                                                            guessTwentyOneDigit.add(characterEleven);
+                                                                                            guessTwentyOneDigit.add(characterTwelve);
+                                                                                            guessTwentyOneDigit.add(characterThirteen);
+                                                                                            guessTwentyOneDigit.add(characterFourteen);
+                                                                                            guessTwentyOneDigit.add(characterFifteen);
+                                                                                            guessTwentyOneDigit.add(characterSixteen);
+                                                                                            guessTwentyOneDigit.add(characterSeventeen);
+                                                                                            guessTwentyOneDigit.add(characterEighteen);
+                                                                                            guessTwentyOneDigit.add(characterNineteen);
+                                                                                            guessTwentyOneDigit.add(characterTwenty);
+                                                                                            guessTwentyOneDigit.add(characterTwentyOne);
+                                                                                            if (!isCorrect){
+                                                                                                if (guessTwentyOneDigit.equals(this.arrayListPassword)) {
+                                                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyOneDigit + " | - Correct - " + time + " seconds");
+                                                                                                    isCorrect = true;
+                                                                                                    executor.shutdownNow();
+                                                                                                    break outer;
+                                                                                                } else {
+                                                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyOneDigit + " | - Wrong - " + time + " seconds");
+                                                                                                    attempts++;
+                                                                                                }
+                                                                                            }
+                                                                                            for (int itrTwentyTwo = 0; itrTwentyTwo < indexArrayList.size(); itrTwentyTwo++) {
+                                                                                                ArrayList<Character> guessTwentyTwoDigit = new ArrayList<>();
+                                                                                                Character characterTwentyTwo = index[itrTwentyTwo];
+                                                                                                guessTwentyTwoDigit.add(characterOne);
+                                                                                                guessTwentyTwoDigit.add(characterTwo);
+                                                                                                guessTwentyTwoDigit.add(characterThree);
+                                                                                                guessTwentyTwoDigit.add(characterFour);
+                                                                                                guessTwentyTwoDigit.add(characterFive);
+                                                                                                guessTwentyTwoDigit.add(characterSix);
+                                                                                                guessTwentyTwoDigit.add(characterSeven);
+                                                                                                guessTwentyTwoDigit.add(characterEight);
+                                                                                                guessTwentyTwoDigit.add(characterNine);
+                                                                                                guessTwentyTwoDigit.add(characterTen);
+                                                                                                guessTwentyTwoDigit.add(characterEleven);
+                                                                                                guessTwentyTwoDigit.add(characterTwelve);
+                                                                                                guessTwentyTwoDigit.add(characterThirteen);
+                                                                                                guessTwentyTwoDigit.add(characterFourteen);
+                                                                                                guessTwentyTwoDigit.add(characterFifteen);
+                                                                                                guessTwentyTwoDigit.add(characterSixteen);
+                                                                                                guessTwentyTwoDigit.add(characterSeventeen);
+                                                                                                guessTwentyTwoDigit.add(characterEighteen);
+                                                                                                guessTwentyTwoDigit.add(characterNineteen);
+                                                                                                guessTwentyTwoDigit.add(characterTwenty);
+                                                                                                guessTwentyTwoDigit.add(characterTwentyOne);
+                                                                                                guessTwentyTwoDigit.add(characterTwentyTwo);
+                                                                                                if (!isCorrect){
+                                                                                                    if (guessTwentyTwoDigit.equals(this.arrayListPassword)) {
+                                                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyTwoDigit + " | - Correct - " + time + " seconds");
+                                                                                                        isCorrect = true;
+                                                                                                        executor.shutdownNow();
+                                                                                                        break outer;
+                                                                                                    } else {
+                                                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyTwoDigit + " | - Wrong - " + time + " seconds");
+                                                                                                        attempts++;
+                                                                                                    }
+                                                                                                }
+                                                                                                for (int itrTwentyThree = 0; itrTwentyThree < indexArrayList.size(); itrTwentyThree++) {
+                                                                                                    ArrayList<Character> guessTwentyThreeDigit = new ArrayList<>();
+                                                                                                    Character characterTwentyThree = index[itrTwentyThree];
+                                                                                                    guessTwentyThreeDigit.add(characterOne);
+                                                                                                    guessTwentyThreeDigit.add(characterTwo);
+                                                                                                    guessTwentyThreeDigit.add(characterThree);
+                                                                                                    guessTwentyThreeDigit.add(characterFour);
+                                                                                                    guessTwentyThreeDigit.add(characterFive);
+                                                                                                    guessTwentyThreeDigit.add(characterSix);
+                                                                                                    guessTwentyThreeDigit.add(characterSeven);
+                                                                                                    guessTwentyThreeDigit.add(characterEight);
+                                                                                                    guessTwentyThreeDigit.add(characterNine);
+                                                                                                    guessTwentyThreeDigit.add(characterTen);
+                                                                                                    guessTwentyThreeDigit.add(characterEleven);
+                                                                                                    guessTwentyThreeDigit.add(characterTwelve);
+                                                                                                    guessTwentyThreeDigit.add(characterThirteen);
+                                                                                                    guessTwentyThreeDigit.add(characterFourteen);
+                                                                                                    guessTwentyThreeDigit.add(characterFifteen);
+                                                                                                    guessTwentyThreeDigit.add(characterSixteen);
+                                                                                                    guessTwentyThreeDigit.add(characterSeventeen);
+                                                                                                    guessTwentyThreeDigit.add(characterEighteen);
+                                                                                                    guessTwentyThreeDigit.add(characterNineteen);
+                                                                                                    guessTwentyThreeDigit.add(characterTwenty);
+                                                                                                    guessTwentyThreeDigit.add(characterTwentyOne);
+                                                                                                    guessTwentyThreeDigit.add(characterTwentyTwo);
+                                                                                                    guessTwentyThreeDigit.add(characterTwentyThree);
+                                                                                                    if (!isCorrect){
+                                                                                                        if (guessTwentyThreeDigit.equals(this.arrayListPassword)) {
+                                                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyThreeDigit + " | - Correct - " + time + " seconds");
+                                                                                                            isCorrect = true;
+                                                                                                            executor.shutdownNow();
+                                                                                                            break outer;
+                                                                                                        } else {
+                                                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyThreeDigit + " | - Wrong - " + time + " seconds");
+                                                                                                            attempts++;
+                                                                                                        }
+                                                                                                    }
+                                                                                                    for (int itrTwentyFour = 0; itrTwentyFour < indexArrayList.size(); itrTwentyFour++) {
+                                                                                                        ArrayList<Character> guessTwentyFourDigit = new ArrayList<>();
+                                                                                                        Character characterTwentyFour = index[itrTwentyFour];
+                                                                                                        guessTwentyFourDigit.add(characterOne);
+                                                                                                        guessTwentyFourDigit.add(characterTwo);
+                                                                                                        guessTwentyFourDigit.add(characterThree);
+                                                                                                        guessTwentyFourDigit.add(characterFour);
+                                                                                                        guessTwentyFourDigit.add(characterFive);
+                                                                                                        guessTwentyFourDigit.add(characterSix);
+                                                                                                        guessTwentyFourDigit.add(characterSeven);
+                                                                                                        guessTwentyFourDigit.add(characterEight);
+                                                                                                        guessTwentyFourDigit.add(characterNine);
+                                                                                                        guessTwentyFourDigit.add(characterTen);
+                                                                                                        guessTwentyFourDigit.add(characterEleven);
+                                                                                                        guessTwentyFourDigit.add(characterTwelve);
+                                                                                                        guessTwentyFourDigit.add(characterThirteen);
+                                                                                                        guessTwentyFourDigit.add(characterFourteen);
+                                                                                                        guessTwentyFourDigit.add(characterFifteen);
+                                                                                                        guessTwentyFourDigit.add(characterSixteen);
+                                                                                                        guessTwentyFourDigit.add(characterSeventeen);
+                                                                                                        guessTwentyFourDigit.add(characterEighteen);
+                                                                                                        guessTwentyFourDigit.add(characterNineteen);
+                                                                                                        guessTwentyFourDigit.add(characterTwenty);
+                                                                                                        guessTwentyFourDigit.add(characterTwentyOne);
+                                                                                                        guessTwentyFourDigit.add(characterTwentyTwo);
+                                                                                                        guessTwentyFourDigit.add(characterTwentyThree);
+                                                                                                        guessTwentyFourDigit.add(characterTwentyFour);
+                                                                                                        if (!isCorrect){
+                                                                                                            if (guessTwentyFourDigit.equals(this.arrayListPassword)) {
+                                                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyFourDigit + " | - Correct - " + time + " seconds");
+                                                                                                                isCorrect = true;
+                                                                                                                executor.shutdownNow();
+                                                                                                                break outer;
+                                                                                                            } else {
+                                                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyFourDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                attempts++;
+                                                                                                            }
+                                                                                                        }
+                                                                                                        for (int itrTwentyFive = 0; itrTwentyFive < indexArrayList.size(); itrTwentyFive++) {
+                                                                                                            ArrayList<Character> guessTwentyFiveDigit = new ArrayList<>();
+                                                                                                            Character characterTwentyFive = index[itrTwentyFive];
+                                                                                                            guessTwentyFiveDigit.add(characterOne);
+                                                                                                            guessTwentyFiveDigit.add(characterTwo);
+                                                                                                            guessTwentyFiveDigit.add(characterThree);
+                                                                                                            guessTwentyFiveDigit.add(characterFour);
+                                                                                                            guessTwentyFiveDigit.add(characterFive);
+                                                                                                            guessTwentyFiveDigit.add(characterSix);
+                                                                                                            guessTwentyFiveDigit.add(characterSeven);
+                                                                                                            guessTwentyFiveDigit.add(characterEight);
+                                                                                                            guessTwentyFiveDigit.add(characterNine);
+                                                                                                            guessTwentyFiveDigit.add(characterTen);
+                                                                                                            guessTwentyFiveDigit.add(characterEleven);
+                                                                                                            guessTwentyFiveDigit.add(characterTwelve);
+                                                                                                            guessTwentyFiveDigit.add(characterThirteen);
+                                                                                                            guessTwentyFiveDigit.add(characterFourteen);
+                                                                                                            guessTwentyFiveDigit.add(characterFifteen);
+                                                                                                            guessTwentyFiveDigit.add(characterSixteen);
+                                                                                                            guessTwentyFiveDigit.add(characterSeventeen);
+                                                                                                            guessTwentyFiveDigit.add(characterEighteen);
+                                                                                                            guessTwentyFiveDigit.add(characterNineteen);
+                                                                                                            guessTwentyFiveDigit.add(characterTwenty);
+                                                                                                            guessTwentyFiveDigit.add(characterTwentyOne);
+                                                                                                            guessTwentyFiveDigit.add(characterTwentyTwo);
+                                                                                                            guessTwentyFiveDigit.add(characterTwentyThree);
+                                                                                                            guessTwentyFiveDigit.add(characterTwentyFour);
+                                                                                                            guessTwentyFiveDigit.add(characterTwentyFive);
+                                                                                                            if (!isCorrect){
+                                                                                                                if (guessTwentyFiveDigit.equals(this.arrayListPassword)) {
+                                                                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyFiveDigit + " | - Correct - " + time + " seconds");
+                                                                                                                    isCorrect = true;
+                                                                                                                    executor.shutdownNow();
+                                                                                                                    break outer;
+                                                                                                                } else {
+                                                                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyFiveDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                    attempts++;
+                                                                                                                }
+                                                                                                            }
+                                                                                                            for (int itrTwentySix = 0; itrTwentySix < indexArrayList.size(); itrTwentySix++) {
+                                                                                                                ArrayList<Character> guessTwentySixDigit = new ArrayList<>();
+                                                                                                                Character characterTwentySix = index[itrTwentyFive];
+                                                                                                                guessTwentySixDigit.add(characterOne);
+                                                                                                                guessTwentySixDigit.add(characterTwo);
+                                                                                                                guessTwentySixDigit.add(characterThree);
+                                                                                                                guessTwentySixDigit.add(characterFour);
+                                                                                                                guessTwentySixDigit.add(characterFive);
+                                                                                                                guessTwentySixDigit.add(characterSix);
+                                                                                                                guessTwentySixDigit.add(characterSeven);
+                                                                                                                guessTwentySixDigit.add(characterEight);
+                                                                                                                guessTwentySixDigit.add(characterNine);
+                                                                                                                guessTwentySixDigit.add(characterTen);
+                                                                                                                guessTwentySixDigit.add(characterEleven);
+                                                                                                                guessTwentySixDigit.add(characterTwelve);
+                                                                                                                guessTwentySixDigit.add(characterThirteen);
+                                                                                                                guessTwentySixDigit.add(characterFourteen);
+                                                                                                                guessTwentySixDigit.add(characterFifteen);
+                                                                                                                guessTwentySixDigit.add(characterSixteen);
+                                                                                                                guessTwentySixDigit.add(characterSeventeen);
+                                                                                                                guessTwentySixDigit.add(characterEighteen);
+                                                                                                                guessTwentySixDigit.add(characterNineteen);
+                                                                                                                guessTwentySixDigit.add(characterTwenty);
+                                                                                                                guessTwentySixDigit.add(characterTwentyOne);
+                                                                                                                guessTwentySixDigit.add(characterTwentyTwo);
+                                                                                                                guessTwentySixDigit.add(characterTwentyThree);
+                                                                                                                guessTwentySixDigit.add(characterTwentyFour);
+                                                                                                                guessTwentySixDigit.add(characterTwentyFive);
+                                                                                                                guessTwentySixDigit.add(characterTwentySix);
+                                                                                                                if (!isCorrect){
+                                                                                                                    if (guessTwentySixDigit.equals(this.arrayListPassword)) {
+                                                                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentySixDigit + " | - Correct - " + time + " seconds");
+                                                                                                                        isCorrect = true;
+                                                                                                                        executor.shutdownNow();
+                                                                                                                        break outer;
+                                                                                                                    } else {
+                                                                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentySixDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                        attempts++;
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                for (int itrTwentySeven = 0; itrTwentySeven < indexArrayList.size(); itrTwentySeven++) {
+                                                                                                                    ArrayList<Character> guessTwentySevenDigit = new ArrayList<>();
+                                                                                                                    Character characterTwentySeven = index[itrTwentySeven];
+                                                                                                                    guessTwentySevenDigit.add(characterOne);
+                                                                                                                    guessTwentySevenDigit.add(characterTwo);
+                                                                                                                    guessTwentySevenDigit.add(characterThree);
+                                                                                                                    guessTwentySevenDigit.add(characterFour);
+                                                                                                                    guessTwentySevenDigit.add(characterFive);
+                                                                                                                    guessTwentySevenDigit.add(characterSix);
+                                                                                                                    guessTwentySevenDigit.add(characterSeven);
+                                                                                                                    guessTwentySevenDigit.add(characterEight);
+                                                                                                                    guessTwentySevenDigit.add(characterNine);
+                                                                                                                    guessTwentySevenDigit.add(characterTen);
+                                                                                                                    guessTwentySevenDigit.add(characterEleven);
+                                                                                                                    guessTwentySevenDigit.add(characterTwelve);
+                                                                                                                    guessTwentySevenDigit.add(characterThirteen);
+                                                                                                                    guessTwentySevenDigit.add(characterFourteen);
+                                                                                                                    guessTwentySevenDigit.add(characterFifteen);
+                                                                                                                    guessTwentySevenDigit.add(characterSixteen);
+                                                                                                                    guessTwentySevenDigit.add(characterSeventeen);
+                                                                                                                    guessTwentySevenDigit.add(characterEighteen);
+                                                                                                                    guessTwentySevenDigit.add(characterNineteen);
+                                                                                                                    guessTwentySevenDigit.add(characterTwenty);
+                                                                                                                    guessTwentySevenDigit.add(characterTwentyOne);
+                                                                                                                    guessTwentySevenDigit.add(characterTwentyTwo);
+                                                                                                                    guessTwentySevenDigit.add(characterTwentyThree);
+                                                                                                                    guessTwentySevenDigit.add(characterTwentyFour);
+                                                                                                                    guessTwentySevenDigit.add(characterTwentyFive);
+                                                                                                                    guessTwentySevenDigit.add(characterTwentySix);
+                                                                                                                    guessTwentySevenDigit.add(characterTwentySeven);
+                                                                                                                    if (!isCorrect) {
+                                                                                                                        if (guessTwentySevenDigit.equals(this.arrayListPassword)) {
+                                                                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentySevenDigit + " | - Correct - " + time + " seconds");
+                                                                                                                            isCorrect = true;
+                                                                                                                            executor.shutdownNow();
+                                                                                                                            break outer;
+                                                                                                                        } else {
+                                                                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentySevenDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                            attempts++;
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                    for (int itrTwentyEight = 0; itrTwentyEight < indexArrayList.size(); itrTwentyEight++) {
+                                                                                                                        ArrayList<Character> guessTwentyEightDigit = new ArrayList<>();
+                                                                                                                        Character characterTwentyEight = index[itrTwentyEight];
+                                                                                                                        guessTwentyEightDigit.add(characterOne);
+                                                                                                                        guessTwentyEightDigit.add(characterTwo);
+                                                                                                                        guessTwentyEightDigit.add(characterThree);
+                                                                                                                        guessTwentyEightDigit.add(characterFour);
+                                                                                                                        guessTwentyEightDigit.add(characterFive);
+                                                                                                                        guessTwentyEightDigit.add(characterSix);
+                                                                                                                        guessTwentyEightDigit.add(characterSeven);
+                                                                                                                        guessTwentyEightDigit.add(characterEight);
+                                                                                                                        guessTwentyEightDigit.add(characterNine);
+                                                                                                                        guessTwentyEightDigit.add(characterTen);
+                                                                                                                        guessTwentyEightDigit.add(characterEleven);
+                                                                                                                        guessTwentyEightDigit.add(characterTwelve);
+                                                                                                                        guessTwentyEightDigit.add(characterThirteen);
+                                                                                                                        guessTwentyEightDigit.add(characterFourteen);
+                                                                                                                        guessTwentyEightDigit.add(characterFifteen);
+                                                                                                                        guessTwentyEightDigit.add(characterSixteen);
+                                                                                                                        guessTwentyEightDigit.add(characterSeventeen);
+                                                                                                                        guessTwentyEightDigit.add(characterEighteen);
+                                                                                                                        guessTwentyEightDigit.add(characterNineteen);
+                                                                                                                        guessTwentyEightDigit.add(characterTwenty);
+                                                                                                                        guessTwentyEightDigit.add(characterTwentyOne);
+                                                                                                                        guessTwentyEightDigit.add(characterTwentyTwo);
+                                                                                                                        guessTwentyEightDigit.add(characterTwentyThree);
+                                                                                                                        guessTwentyEightDigit.add(characterTwentyFour);
+                                                                                                                        guessTwentyEightDigit.add(characterTwentyFive);
+                                                                                                                        guessTwentyEightDigit.add(characterTwentySix);
+                                                                                                                        guessTwentyEightDigit.add(characterTwentySeven);
+                                                                                                                        guessTwentyEightDigit.add(characterTwentyEight);
+                                                                                                                        if (!isCorrect) {
+                                                                                                                            if (guessTwentyEightDigit.equals(this.arrayListPassword)) {
+                                                                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyEightDigit + " | - Correct - " + time + " seconds");
+                                                                                                                                isCorrect = true;
+                                                                                                                                executor.shutdownNow();
+                                                                                                                                break outer;
+                                                                                                                            } else {
+                                                                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyEightDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                                attempts++;
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                        for (int itrTwentyNine = 0; itrTwentyNine < indexArrayList.size(); itrTwentyNine++) {
+                                                                                                                            ArrayList<Character> guessTwentyNineDigit = new ArrayList<>();
+                                                                                                                            Character characterTwentyNine = index[itrTwentyNine];
+                                                                                                                            guessTwentyNineDigit.add(characterOne);
+                                                                                                                            guessTwentyNineDigit.add(characterTwo);
+                                                                                                                            guessTwentyNineDigit.add(characterThree);
+                                                                                                                            guessTwentyNineDigit.add(characterFour);
+                                                                                                                            guessTwentyNineDigit.add(characterFive);
+                                                                                                                            guessTwentyNineDigit.add(characterSix);
+                                                                                                                            guessTwentyNineDigit.add(characterSeven);
+                                                                                                                            guessTwentyNineDigit.add(characterEight);
+                                                                                                                            guessTwentyNineDigit.add(characterNine);
+                                                                                                                            guessTwentyNineDigit.add(characterTen);
+                                                                                                                            guessTwentyNineDigit.add(characterEleven);
+                                                                                                                            guessTwentyNineDigit.add(characterTwelve);
+                                                                                                                            guessTwentyNineDigit.add(characterThirteen);
+                                                                                                                            guessTwentyNineDigit.add(characterFourteen);
+                                                                                                                            guessTwentyNineDigit.add(characterFifteen);
+                                                                                                                            guessTwentyNineDigit.add(characterSixteen);
+                                                                                                                            guessTwentyNineDigit.add(characterSeventeen);
+                                                                                                                            guessTwentyNineDigit.add(characterEighteen);
+                                                                                                                            guessTwentyNineDigit.add(characterNineteen);
+                                                                                                                            guessTwentyNineDigit.add(characterTwenty);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentyOne);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentyTwo);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentyThree);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentyFour);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentyFive);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentySix);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentySeven);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentyEight);
+                                                                                                                            guessTwentyNineDigit.add(characterTwentyNine);
+                                                                                                                            if (!isCorrect) {
+                                                                                                                                if (guessTwentyNineDigit.equals(this.arrayListPassword)) {
+                                                                                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyNineDigit + " | - Correct - " + time + " seconds");
+                                                                                                                                    isCorrect = true;
+                                                                                                                                    executor.shutdownNow();
+                                                                                                                                    break outer;
+                                                                                                                                } else {
+                                                                                                                                    long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessTwentyNineDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                                    attempts++;
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                            for (int itrThirty = 0; itrThirty < indexArrayList.size(); itrThirty++) {
+                                                                                                                                ArrayList<Character> guessThirtyDigit = new ArrayList<>();
+                                                                                                                                Character characterThirty = index[itrThirty];
+                                                                                                                                guessThirtyDigit.add(characterOne);
+                                                                                                                                guessThirtyDigit.add(characterTwo);
+                                                                                                                                guessThirtyDigit.add(characterThree);
+                                                                                                                                guessThirtyDigit.add(characterFour);
+                                                                                                                                guessThirtyDigit.add(characterFive);
+                                                                                                                                guessThirtyDigit.add(characterSix);
+                                                                                                                                guessThirtyDigit.add(characterSeven);
+                                                                                                                                guessThirtyDigit.add(characterEight);
+                                                                                                                                guessThirtyDigit.add(characterNine);
+                                                                                                                                guessThirtyDigit.add(characterTen);
+                                                                                                                                guessThirtyDigit.add(characterEleven);
+                                                                                                                                guessThirtyDigit.add(characterTwelve);
+                                                                                                                                guessThirtyDigit.add(characterThirteen);
+                                                                                                                                guessThirtyDigit.add(characterFourteen);
+                                                                                                                                guessThirtyDigit.add(characterFifteen);
+                                                                                                                                guessThirtyDigit.add(characterSixteen);
+                                                                                                                                guessThirtyDigit.add(characterSeventeen);
+                                                                                                                                guessThirtyDigit.add(characterEighteen);
+                                                                                                                                guessThirtyDigit.add(characterNineteen);
+                                                                                                                                guessThirtyDigit.add(characterTwenty);
+                                                                                                                                guessThirtyDigit.add(characterTwentyOne);
+                                                                                                                                guessThirtyDigit.add(characterTwentyTwo);
+                                                                                                                                guessThirtyDigit.add(characterTwentyThree);
+                                                                                                                                guessThirtyDigit.add(characterTwentyFour);
+                                                                                                                                guessThirtyDigit.add(characterTwentyFive);
+                                                                                                                                guessThirtyDigit.add(characterTwentySix);
+                                                                                                                                guessThirtyDigit.add(characterTwentySeven);
+                                                                                                                                guessThirtyDigit.add(characterTwentyEight);
+                                                                                                                                guessThirtyDigit.add(characterTwentyNine);
+                                                                                                                                guessThirtyDigit.add(characterThirty);
+                                                                                                                                if (!isCorrect) {
+                                                                                                                                    if (guessThirtyDigit.equals(this.arrayListPassword)) {
+                                                                                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThirtyDigit + " | - Correct - " + time + " seconds");
+                                                                                                                                        isCorrect = true;
+                                                                                                                                        executor.shutdownNow();
+                                                                                                                                        break outer;
+                                                                                                                                    } else {
+                                                                                                                                        long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThirtyDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                                        attempts++;
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                                for (int itrThirtyOne = 0; itrThirtyOne < indexArrayList.size(); itrThirtyOne++) {
+                                                                                                                                    ArrayList<Character> guessThirtyOneDigit = new ArrayList<>();
+                                                                                                                                    Character characterThirtyOne = index[itrThirtyOne];
+                                                                                                                                    guessThirtyOneDigit.add(characterOne);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwo);
+                                                                                                                                    guessThirtyOneDigit.add(characterThree);
+                                                                                                                                    guessThirtyOneDigit.add(characterFour);
+                                                                                                                                    guessThirtyOneDigit.add(characterFive);
+                                                                                                                                    guessThirtyOneDigit.add(characterSix);
+                                                                                                                                    guessThirtyOneDigit.add(characterSeven);
+                                                                                                                                    guessThirtyOneDigit.add(characterEight);
+                                                                                                                                    guessThirtyOneDigit.add(characterNine);
+                                                                                                                                    guessThirtyOneDigit.add(characterTen);
+                                                                                                                                    guessThirtyOneDigit.add(characterEleven);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwelve);
+                                                                                                                                    guessThirtyOneDigit.add(characterThirteen);
+                                                                                                                                    guessThirtyOneDigit.add(characterFourteen);
+                                                                                                                                    guessThirtyOneDigit.add(characterFifteen);
+                                                                                                                                    guessThirtyOneDigit.add(characterSixteen);
+                                                                                                                                    guessThirtyOneDigit.add(characterSeventeen);
+                                                                                                                                    guessThirtyOneDigit.add(characterEighteen);
+                                                                                                                                    guessThirtyOneDigit.add(characterNineteen);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwenty);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentyOne);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentyTwo);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentyThree);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentyFour);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentyFive);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentySix);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentySeven);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentyEight);
+                                                                                                                                    guessThirtyOneDigit.add(characterTwentyNine);
+                                                                                                                                    guessThirtyOneDigit.add(characterThirty);
+                                                                                                                                    guessThirtyOneDigit.add(characterThirtyOne);
+                                                                                                                                    if (!isCorrect) {
+                                                                                                                                        if (guessThirtyOneDigit.equals(this.arrayListPassword)) {
+                                                                                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThirtyOneDigit + " | - Correct - " + time + " seconds");
+                                                                                                                                            isCorrect = true;
+                                                                                                                                            executor.shutdownNow();
+                                                                                                                                            break outer;
+                                                                                                                                        } else {
+                                                                                                                                            long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThirtyOneDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                                            attempts++;
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                    for (int itrThirtyTwo = 0; itrThirtyTwo < indexArrayList.size(); itrThirtyTwo++) {
+                                                                                                                                        ArrayList<Character> guessThirtyTwoDigit = new ArrayList<>();
+                                                                                                                                        Character characterThirtyTwo = index[itrThirtyTwo];
+                                                                                                                                        guessThirtyTwoDigit.add(characterOne);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwo);
+                                                                                                                                        guessThirtyTwoDigit.add(characterThree);
+                                                                                                                                        guessThirtyTwoDigit.add(characterFour);
+                                                                                                                                        guessThirtyTwoDigit.add(characterFive);
+                                                                                                                                        guessThirtyTwoDigit.add(characterSix);
+                                                                                                                                        guessThirtyTwoDigit.add(characterSeven);
+                                                                                                                                        guessThirtyTwoDigit.add(characterEight);
+                                                                                                                                        guessThirtyTwoDigit.add(characterNine);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTen);
+                                                                                                                                        guessThirtyTwoDigit.add(characterEleven);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwelve);
+                                                                                                                                        guessThirtyTwoDigit.add(characterThirteen);
+                                                                                                                                        guessThirtyTwoDigit.add(characterFourteen);
+                                                                                                                                        guessThirtyTwoDigit.add(characterFifteen);
+                                                                                                                                        guessThirtyTwoDigit.add(characterSixteen);
+                                                                                                                                        guessThirtyTwoDigit.add(characterSeventeen);
+                                                                                                                                        guessThirtyTwoDigit.add(characterEighteen);
+                                                                                                                                        guessThirtyTwoDigit.add(characterNineteen);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwenty);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentyOne);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentyTwo);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentyThree);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentyFour);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentyFive);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentySix);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentySeven);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentyEight);
+                                                                                                                                        guessThirtyTwoDigit.add(characterTwentyNine);
+                                                                                                                                        guessThirtyTwoDigit.add(characterThirty);
+                                                                                                                                        guessThirtyTwoDigit.add(characterThirtyOne);
+                                                                                                                                        guessThirtyTwoDigit.add(characterThirtyTwo);
+                                                                                                                                        if (!isCorrect) {
+                                                                                                                                            if (guessThirtyTwoDigit.equals(this.arrayListPassword)) {
+                                                                                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThirtyTwoDigit + " | - Correct - " + time + " seconds");
+                                                                                                                                                isCorrect = true;
+                                                                                                                                                executor.shutdownNow();
+                                                                                                                                                break outer;
+                                                                                                                                            } else {
+                                                                                                                                                long time = (System.currentTimeMillis() - start) / 1000;
+                                                                                                                                                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | " + guessThirtyTwoDigit + " | - Wrong - " + time + " seconds");
+                                                                                                                                                attempts++;
+                                                                                                                                            }
+                                                                                                                                        }
 
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
                                                                                     }
                                                                                 }
                                                                             }
