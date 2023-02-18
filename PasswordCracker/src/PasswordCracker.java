@@ -2,17 +2,20 @@
 // Password Pen Tester: A Java program that test the strength of passwords using various methods.
 // Created 2/6/2023
 // Last modified 2/12/2023
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.text.NumberFormat;
+
 public class PasswordCracker implements Runnable {
     static int nThreads = Runtime.getRuntime().availableProcessors() / 2;
     static ExecutorService executor = Executors.newFixedThreadPool(nThreads);
-    static long nMemory = Runtime.getRuntime().freeMemory();
-    static long nMaxMemory = Runtime.getRuntime().maxMemory(); // To do: unique data list iterators will only run as long as they have a set amount of memory remaining for system functionality. If not, the program will terminate and notify the user that the method is unusable for their given test password.
-    String password = "";
+    static long nMemory = Runtime.getRuntime().freeMemory() / 1000000;
+    static long nMaxMemory = Runtime.getRuntime().maxMemory() / 1000000; // To do: unique data list iterators will only run as long as they have a set amount of memory remaining for system functionality. If not, the program will terminate and notify the user that the method is unusable for their given test password.
+    String password;
     char[] arrayPassword;
     char[] index = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0','1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ',', '.', '\\', '/', '<', '>', '~', '!', '@', '#', '$', '%', '&', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '?', '\'', '"', '|'};
     ArrayList<Character> arrayListPassword = new ArrayList<>();
@@ -22,8 +25,19 @@ public class PasswordCracker implements Runnable {
         arrayPassword = password.toCharArray();
         for (Character character : arrayPassword) { arrayListPassword.add(character); }
     }
+    public void test() { // Arbitrarily method meant for testing.
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(0);
+        long attempts = 1;
+        long possibleAttempts = 1;
+        if (arrayListPassword.size() == 1) { possibleAttempts = index.length; } else if (arrayListPassword.size() > 1) { for (int i = 0; i < arrayListPassword.size(); i++) { possibleAttempts *= index.length; }}
+        BigDecimal integer = new BigDecimal(String.valueOf(Math.pow(index.length, arrayPassword.length)));
+        System.out.println(numberFormat.format(integer));
+
+    }
     //To do: make a sequence method that takes a length argument and uses logic flow of original but breaks its (possibly number based) label depending on the argument.
     //In progress: research IntStream substitutions for size, readability, and elegance.
+    //To do: clean up instances violating DRY (do not repeat yourself)
     public void seqCharPasswordGenerator() {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
@@ -1109,27 +1123,27 @@ public class PasswordCracker implements Runnable {
         }
     }
     //Possibilities should only show if a size is set.
-    //Possibilities larger than type long should be a BigNumber object.
     public void randCharPasswordGenerator() {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
         long start = System.currentTimeMillis();
         boolean correctValue = false;
-        long attempts = 1;
-        long possibleAttempts = 1;
-        if (arrayListPassword.size() == 1) { possibleAttempts = index.length; } else if (arrayListPassword.size() > 1) { for (int i = 0; i < arrayListPassword.size(); i++) { possibleAttempts *= index.length; }}
+        BigDecimal attempts = new BigDecimal("1");
+        BigDecimal increment = new BigDecimal("1");
+        BigDecimal possibleAttempts = new BigDecimal(String.valueOf(Math.pow(index.length, arrayPassword.length)));
         while(!correctValue) {
+            BigDecimal percentComplete = attempts.divide(possibleAttempts, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100"));
             ArrayList<Character> guess = new ArrayList<>();
             for(int j = 0; j < arrayListPassword.size(); j++) { guess.add(index[(int) (Math.random() * index.length)]); }
             if (guess.equals(this.arrayListPassword)) {
                 long time = (System.currentTimeMillis() - start) / 1000;
-                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Correct - " + time + " seconds");
+                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Correct - " + time + " seconds | Not Unique Percent Complete: " + numberFormat.format(percentComplete) + "%");
                 correctValue = true;
                 executor.shutdownNow();
             } else {
                 long time = (System.currentTimeMillis() - start) / 1000;
-                    System.out.println(" Thread: " + Thread.currentThread().getName() +  " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Wrong - " + time + " seconds");
-                    attempts++;
+                    System.out.println(" Thread: " + Thread.currentThread().getName() +  " | Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Wrong - " + time + " seconds | Not Unique Percent Complete: " + numberFormat.format(percentComplete) + "%");
+                attempts = attempts.add(increment);
                 }
         }
     }
@@ -1138,61 +1152,63 @@ public class PasswordCracker implements Runnable {
         numberFormat.setMaximumFractionDigits(0);
         long start = System.currentTimeMillis();
         boolean correctValue = false;
-        long attempts = 1;
-        long possibleAttempts = 1;
+        BigDecimal attempts = new BigDecimal("1");
+        BigDecimal increment = new BigDecimal("1");
         while(!correctValue) {
-            ArrayList<Character> guess = new ArrayList<>();
-            int randSize = (int) (Math.random() * passwordLengthCapacity);
-            if (randSize == 0) { randSize++; }
-            if (randSize == 1) { possibleAttempts = index.length; } else if (randSize > 1) { for (int i = 0; i < randSize; i++) { possibleAttempts *= index.length; }}
-            for(int j = 0; j < randSize; j++) { guess.add(index[(int) (Math.random() * index.length)]); }
-            if (guess.equals(this.arrayListPassword)) {
-                long time = (System.currentTimeMillis() - start) / 1000;
-                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guess + " - Correct - " + time + " seconds");
-                correctValue = true;
-                executor.shutdownNow();
-            } else {
-                long time = (System.currentTimeMillis() - start) / 1000;
-                System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guess + " - Wrong - " + time + " seconds");
-                attempts++;
+            if (nMemory < nMaxMemory) {
+                ArrayList<Character> guess = new ArrayList<>();
+                int randSize = (int) (Math.random() * passwordLengthCapacity);
+                if (randSize == 0) {
+                    randSize++;
+                }
+                for (int i = 0; i < randSize; i++) {
+                    guess.add(index[(int) (Math.random() * index.length)]);
+                }
+                if (guess.equals(this.arrayListPassword)) {
+                    long time = (System.currentTimeMillis() - start) / 1000;
+                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guess + " - Correct - " + time + " seconds");
+                    correctValue = true;
+                    executor.shutdownNow();
+                } else {
+                    long time = (System.currentTimeMillis() - start) / 1000;
+                    System.out.println(" Thread: " + Thread.currentThread().getName() + " | Attempt: " + numberFormat.format(attempts) + " | " + guess + " - Wrong - " + time + " seconds");
+                    attempts = attempts.add(increment);
+                }
             }
         }
     }
-    public void randCharListPasswordGenerator() {
+    public void randUniqueCharPasswordGenerator() {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
+        BigDecimal attempts = new BigDecimal("1");
+        BigDecimal increment = new BigDecimal("1");
+        BigDecimal possibleAttempts = new BigDecimal(String.valueOf(Math.pow(index.length, arrayPassword.length)));
         long start = System.currentTimeMillis();
         boolean correctValue = false;
-        long attempts = 1;
-        long wrongGuessAmount = 0;
-        long possibleAttempts = 1;
-        if (arrayListPassword.size() == 1) { possibleAttempts = index.length; } else if (arrayListPassword.size() > 1) { for (int i = 0; i < arrayListPassword.size(); i++) { possibleAttempts *= index.length; }}
         ArrayList<ArrayList<Character>> wrongGuesses = new ArrayList<>();
-            while(!correctValue) {
+         outer: while(!correctValue) {
+            if (nMemory < nMaxMemory) {
+                BigDecimal percentComplete = attempts.divide(possibleAttempts, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100"));
                 ArrayList<Character> guess = new ArrayList<>();
-                for(int j = 0; j < arrayListPassword.size(); j++) { guess.add(index[(int) (Math.random() * index.length)]); }
-                boolean containsGuess = false;
-                    for (int i = 0; i < wrongGuessAmount; i++) {
-                        if (guess.equals(wrongGuesses.get(i))) {
-                            containsGuess = true;
-                            break;
-                        }
-                    }
-                    if (!containsGuess) {
-                        if (guess.equals(this.arrayListPassword)) {
-                            long time = (System.currentTimeMillis() - start) / 1000;
-                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Correct - " + time + " seconds");
-                            correctValue = true;
-                            executor.shutdownNow();
+                for (int i = 0; i < arrayListPassword.size(); i++) { guess.add(index[(int) (Math.random() * index.length)]); }
+                for (ArrayList<Character> checkGuess : wrongGuesses) { if (checkGuess.equals(guess)) { continue outer; } }
+                    if (guess.equals(this.arrayListPassword)) {
+                        long time = (System.currentTimeMillis() - start) / 1000;
+                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Memory: " + numberFormat.format(nMemory) + "/" + numberFormat.format(nMaxMemory) + " MB" + " | Unique Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Correct - " + time + " seconds | Unique Percent Complete: " + numberFormat.format(percentComplete) + "%");
+                        correctValue = true;
+                        executor.shutdownNow();
                     } else {
-                            long time = (System.currentTimeMillis() - start) / 1000;
-                            wrongGuesses.add(guess);
-                            System.out.println(" Thread: " + Thread.currentThread().getName() + " | Unique Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Wrong - " + time + " seconds");
-                            attempts++;
-                            wrongGuessAmount++;
-                        }
-                }
+                        long time = (System.currentTimeMillis() - start) / 1000;
+                        System.out.println(" Thread: " + Thread.currentThread().getName() + " | Memory: " + numberFormat.format(nMemory) + "/" + numberFormat.format(nMaxMemory) + " MB" + " | Unique Attempt: " + numberFormat.format(attempts) + " | Possibilities: " + numberFormat.format(possibleAttempts) + " | " + guess + " - Wrong - " + time + " seconds | Unique Percent Complete: " + numberFormat.format(percentComplete) + "%");
+                        attempts = attempts.add(increment);
+                        wrongGuesses.add(guess);
+                    }
+            } else {
+                System.out.println("The computer has run out of memory. It can no longer run the program selected. Please choose a different method for this password.");
+                executor.shutdownNow();
+                break;
             }
+        }
     }
     // Password Pen Tester
     public static void main(String[] args) throws InterruptedException {
@@ -1201,26 +1217,34 @@ public class PasswordCracker implements Runnable {
         String password = input.nextLine();
         nThreads = 1; // Override to one thread for now. To do: It will have third option which will have all methods race to be first and the executor will terminate if one is found.
         for (int i = 0; i < nThreads; i++) {
+            // To do: add if i == number, then execute this task
             Runnable task = new PasswordCracker(password);
             executor.execute(task);
         } executor.shutdown(); }
     @Override
-    public void run() {
+    public void run() { // To do: redesign so it asks what type of algorithm based on type values. For example, random or sequential and unique or not. This will make customizing choices simpler. Race option may ask which (if not all) methods they want to race and instantiate thread tasks based on selection.
         Scanner input = new Scanner(System.in);
         boolean chosen = false;
         while(!chosen) {
-            System.out.println("Please enter 1 for the random generator (quicker but uncertain) without a set size. Please enter 2 to run the random generator with a set size. \nPlease enter or 3 for the sequential generator (slower but certain) without a set size. Please enter 4 to run the sequential generator with a set size.");
+            System.out.println("Please enter 1 for the random generator (quicker but uncertain) without a set size.\nPlease enter 2 to run the random generator with a set size. \nPlease enter 3 to run the random generator with a set size that makes unique guesses.\nPlease enter 4 for the sequential generator (slower but certain) without a set size.\nPlease enter 5 to run the sequential generator with a set size.\nPlease enter 6 to run all methods at once.");
             int choice = input.nextInt();
             if (choice == 1) {
                 chosen = true;
                 this.randCharLenPasswordGenerator();
             } else if (choice == 2) {
-                chosen = true;
                 this.randCharPasswordGenerator();
+                chosen = true;
             } else if (choice == 3) {
                 chosen = true;
-                this.seqCharPasswordGenerator();
+                this.randUniqueCharPasswordGenerator();
             } else if (choice == 4) {
+                chosen = true;
+                this.seqCharPasswordGenerator();
+            } else if(choice == 5) {
+                chosen = true;
+                this.test(); // Selection 5 is temporarily going to be for accessing the test() method.
+                //System.out.println("Functionality is not yet implemented.");
+            } else if (choice == 6) {
                 chosen = true;
                 System.out.println("Functionality is not yet implemented.");
             } else {
