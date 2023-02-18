@@ -1,7 +1,7 @@
 // Oliver Sigwarth
 // Password Pen Tester: A Java program that test the strength of passwords using various methods.
 // Created 2/6/2023
-// Last modified 2/12/2023
+// Last modified 2/18/2023
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.text.NumberFormat;
-
 public class PasswordCracker implements Runnable {
     static int nThreads = Runtime.getRuntime().availableProcessors() / 2;
     static ExecutorService executor = Executors.newFixedThreadPool(nThreads);
