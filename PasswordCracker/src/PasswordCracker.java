@@ -19,7 +19,7 @@ public class PasswordCracker {
     ArrayList<Character> indexArrayList = new ArrayList<>();
     ArrayList<Character> arrayListPassword = new ArrayList<>();
     BigDecimal increment = new BigDecimal("1");
-    int passwordLengthCapacity = 32; // Override to 32 for now. To do: implement iterators to meet the extended 64 or 128 character password limit.
+    static int passwordLengthCapacity = 32; // Override to 32 for now. To do: implement iterators to meet the extended 64 or 128 character password limit.
     public PasswordCracker(String password) {
         this.password = password;
         arrayPassword = password.toCharArray();
@@ -1130,7 +1130,7 @@ public class PasswordCracker {
         boolean correctLength = false;
         do {
             password = input.nextLine();
-            if (password.length() <= 0 || password.length() > 31) { System.out.println("Please enter a password between 1 and 32 characters: "); } else { correctLength = true; }
+            if (password.length() <= 0 || password.length() > passwordLengthCapacity) { System.out.println("Please enter a password between 1 and 32 characters: "); } else { correctLength = true; }
         } while (!correctLength);
         PasswordCracker passwordToCrack = new PasswordCracker(password);
         Thread threadRandCharLenPasswordGenerator = new Thread(passwordToCrack::randCharLenPasswordGenerator);
