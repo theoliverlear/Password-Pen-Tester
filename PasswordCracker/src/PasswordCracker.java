@@ -4,10 +4,16 @@
 // Last modified 2/21/2023
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 import java.text.NumberFormat;
+
+import static java.lang.String.valueOf;
+
 public class PasswordCracker {
+    BigDecimal increment = new BigDecimal("1");
+    NumberFormat numberFormat = NumberFormat.getInstance(); //Change that the entire program uses this format for DRY
+
+    int guessLength = 1;
     static int nThreads = Runtime.getRuntime().availableProcessors() / 2; // To do: determine how many extra threads can run based on processor.
     static long nMemory = Runtime.getRuntime().freeMemory() / 1_000_000;
     static long nMaxMemory = Runtime.getRuntime().maxMemory() / 1_000_000; // To do: unique data list iterators will only run as long as they have a set amount of memory remaining for system functionality. If not, the program will terminate and notify the user that the method is unusable for their given test password.
@@ -18,25 +24,22 @@ public class PasswordCracker {
     char[] index = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0','1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ',', '.', '\\', '/', '<', '>', '~', '!', '@', '#', '$', '%', '&', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '?', '\'', '"', '|'};
     ArrayList<Character> indexArrayList = new ArrayList<>();
     ArrayList<Character> arrayListPassword = new ArrayList<>();
-    BigDecimal increment = new BigDecimal("1");
-    static int passwordLengthCapacity = 32; // Override to 32 for now. To do: implement iterators to meet the extended 64 or 128 character password limit.
+
+    static int passwordLengthCapacity = 32;
     public PasswordCracker(String password) {
         this.password = password;
         arrayPassword = password.toCharArray();
         for (Character character : arrayPassword) { arrayListPassword.add(character); }
         for (Character character : index) { indexArrayList.add(character); }
     }
-    public void test() { /* Arbitrary method meant for testing. */ }
     //To do: make a sequence method that takes a length argument and uses logic flow of original but breaks its (possibly number based) label depending on the argument.
     //In progress: research IntStream or Iterator substitutions for size, readability, and elegance.
     //To do: clean up instances violating DRY (do not repeat yourself)
-    public void seqCharPasswordGenerator() {
-        NumberFormat numberFormat = NumberFormat.getInstance();
+    public void seqCharPasswordGenerator() { //Change that the entire program uses this format for DRY
         numberFormat.setMaximumFractionDigits(0);
         BigDecimal attempts = new BigDecimal("1");
         long startTime = System.currentTimeMillis();
         outer: while (!isCorrect) {
-            // To get percentage have one equation of time over attempts to get time per attempt. Then get total time est by multiplying it by the possibilities. Then the percentage is the attempts over possibilities.
             for (int itrOne = 0; itrOne < indexArrayList.size(); itrOne++) {
                 if (isCorrect) { break outer; }
                 ArrayList<Character> guessOneDigit = new ArrayList<>();
@@ -1048,13 +1051,11 @@ public class PasswordCracker {
             }
         }
     }
-    //Possibilities should only show if a size is set.
     public void randCharPasswordGenerator() {
-        NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
         long startTime = System.currentTimeMillis();
         BigDecimal attempts = new BigDecimal("1");
-        BigDecimal possibleAttempts = new BigDecimal(String.valueOf(Math.pow(index.length, arrayPassword.length)));
+        BigDecimal possibleAttempts = new BigDecimal(valueOf(Math.pow(index.length, arrayPassword.length)));
         while(!isCorrect) {
             BigDecimal percentComplete = attempts.divide(possibleAttempts, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100"));
             ArrayList<Character> guess = new ArrayList<>();
@@ -1071,7 +1072,6 @@ public class PasswordCracker {
         }
     }
     public void randCharLenPasswordGenerator() {
-        NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
         long startTime = System.currentTimeMillis();
         BigDecimal attempts = new BigDecimal("1");
@@ -1094,13 +1094,14 @@ public class PasswordCracker {
         }
     }
     public void randUniqueCharPasswordGenerator() {
-        NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(0);
         BigDecimal attempts = new BigDecimal("1");
-        BigDecimal possibleAttempts = new BigDecimal(String.valueOf(Math.pow(index.length, arrayPassword.length)));
+        BigDecimal possibleAttempts = new BigDecimal(valueOf(Math.pow(index.length, arrayPassword.length)));
         long startTime = System.currentTimeMillis();
         ArrayList<ArrayList<Character>> wrongGuesses = new ArrayList<>();
         outer: while(!isCorrect) {
+            nMemory = Runtime.getRuntime().freeMemory() / 1_000_000;
+            nMaxMemory = Runtime.getRuntime().maxMemory() / 1_000_000;
             if (nMemory < nMaxMemory) {
                 BigDecimal percentComplete = attempts.divide(possibleAttempts, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100"));
                 ArrayList<Character> guess = new ArrayList<>();
@@ -1148,8 +1149,7 @@ public class PasswordCracker {
                             Please enter 2 to run the random generator with a set size.
                             Please enter 3 to run the random generator with a set size that makes unique guesses.
                             Please enter 4 for the sequential generator (slower but certain) without a set size.
-                            Please enter 5 to run the sequential generator with a set size.
-                            Please enter 6 to run all methods at once.""");
+                            Please enter 5 to run all methods at once.""");
                     choice = Integer.parseUnsignedInt(input.next());
                     correctIntInput = true;
                 } catch (NumberFormatException e) { System.err.println(e + ": Please enter an integer 1-6."); }
@@ -1174,11 +1174,7 @@ public class PasswordCracker {
                 threadSeqCharPasswordGenerator.start();
                 threadSeqCharPasswordGenerator.join();
                 System.out.println(endStatement);
-            } else if(choice == 5) {
-                methodChosen = true;
-                //test(); // Selection 5 is temporarily going to be for accessing the test() method.
-                //System.out.println("Functionality is not yet implemented.");
-            } else if (choice == 6) {
+            } else if (choice == 5) {
                 methodChosen = true;
                 threadRandCharLenPasswordGenerator.start();
                 threadRandCharPasswordGenerator.start();
