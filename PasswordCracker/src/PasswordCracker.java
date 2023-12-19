@@ -11,8 +11,7 @@ import static java.lang.String.valueOf;
 
 public class PasswordCracker {
     BigDecimal increment = new BigDecimal("1");
-    NumberFormat numberFormat = NumberFormat.getInstance(); //Change that the entire program uses this format for DRY
-
+    NumberFormat numberFormat = NumberFormat.getInstance();
     int guessLength = 1;
     static int nThreads = Runtime.getRuntime().availableProcessors() / 2; // To do: determine how many extra threads can run based on processor.
     static long nMemory = Runtime.getRuntime().freeMemory() / 1_000_000;
@@ -24,7 +23,6 @@ public class PasswordCracker {
     char[] index = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0','1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', ',', '.', '\\', '/', '<', '>', '~', '!', '@', '#', '$', '%', '&', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '?', '\'', '"', '|'};
     ArrayList<Character> indexArrayList = new ArrayList<>();
     ArrayList<Character> arrayListPassword = new ArrayList<>();
-
     static int passwordLengthCapacity = 32;
     public PasswordCracker(String password) {
         this.password = password;
@@ -32,10 +30,10 @@ public class PasswordCracker {
         for (Character character : arrayPassword) { arrayListPassword.add(character); }
         for (Character character : index) { indexArrayList.add(character); }
     }
-    //To do: make a sequence method that takes a length argument and uses logic flow of original but breaks its (possibly number based) label depending on the argument.
-    //In progress: research IntStream or Iterator substitutions for size, readability, and elegance.
-    //To do: clean up instances violating DRY (do not repeat yourself)
-    public void seqCharPasswordGenerator() { //Change that the entire program uses this format for DRY
+    public void test() {
+        seqCharPasswordGeneratorV2();
+    }
+    public void seqCharPasswordGenerator() {
         numberFormat.setMaximumFractionDigits(0);
         BigDecimal attempts = new BigDecimal("1");
         long startTime = System.currentTimeMillis();
@@ -1093,6 +1091,9 @@ public class PasswordCracker {
             }
         }
     }
+    public void seqCharPasswordGeneratorV2() {
+
+    }
     public void randUniqueCharPasswordGenerator() {
         numberFormat.setMaximumFractionDigits(0);
         BigDecimal attempts = new BigDecimal("1");
@@ -1138,6 +1139,7 @@ public class PasswordCracker {
         Thread threadRandCharPasswordGenerator = new Thread(passwordToCrack::randCharPasswordGenerator);
         Thread threadRandUniqueCharPasswordGenerator = new Thread(passwordToCrack::randUniqueCharPasswordGenerator);
         Thread threadSeqCharPasswordGenerator = new Thread(passwordToCrack::seqCharPasswordGenerator);
+        Thread testThread = new Thread(passwordToCrack::test);
         boolean methodChosen = false;
         boolean correctIntInput = false;
         int choice = 0;
@@ -1149,7 +1151,8 @@ public class PasswordCracker {
                             Please enter 2 to run the random generator with a set size.
                             Please enter 3 to run the random generator with a set size that makes unique guesses.
                             Please enter 4 for the sequential generator (slower but certain) without a set size.
-                            Please enter 5 to run all methods at once.""");
+                            Please enter 5 for the test method.
+                            Please enter 6 to run all methods at once.""");
                     choice = Integer.parseUnsignedInt(input.next());
                     correctIntInput = true;
                 } catch (NumberFormatException e) { System.err.println(e + ": Please enter an integer 1-6."); }
@@ -1175,6 +1178,11 @@ public class PasswordCracker {
                 threadSeqCharPasswordGenerator.join();
                 System.out.println(endStatement);
             } else if (choice == 5) {
+                methodChosen = true;
+                testThread.start();
+                testThread.join();
+                System.out.println(endStatement);
+            } else if (choice == 6 ) {
                 methodChosen = true;
                 threadRandCharLenPasswordGenerator.start();
                 threadRandCharPasswordGenerator.start();
